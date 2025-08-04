@@ -110,7 +110,7 @@ export default function Example() {
   return (
     <>
       <div>
-        <div className="xl:pl-72">
+        <div className="">
           {/* Sticky search header */}
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-6 shadow-xs">
             <Gradient className="absolute inset-2 bottom-0 ring-1 ring-black/5 ring-inset" />

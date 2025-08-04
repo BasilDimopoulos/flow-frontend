@@ -236,7 +236,7 @@ export default function RootLayout({
             </nav>
           </div>
         </div>
-        {children}
+        <div className="xl:pl-72">{children}</div>
       </body>
     </html>
   )
