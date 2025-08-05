@@ -1,0 +1,67 @@
+'use client'
+import { type Assistant, type Business } from '@/models/models'
+import { useState } from 'react'
+import StepOne from './stepOne'
+import StepThree from './stepThree'
+import StepTwo from './stepTwo'
+
+export interface BusinessWizardStepProps {
+  business: Partial<Business>
+  assistant: Partial<Assistant>
+  onBusinessUpdate: (updates: Partial<Business>) => void
+  onAssistantUpdate: (updates: Partial<Assistant>) => void
+  nextStepAction: () => void
+  backAction: () => void
+}
+
+export default function ManualSetup() {
+  const [currentPage, setCurrentPage] = useState('Page1')
+  const [newBusiness, setNewBusiness] = useState<Partial<Business>>({})
+  const [newAssistant, setNewAssistant] = useState<Partial<Assistant>>({})
+  const NextStepAction = (page: string) => {
+    setCurrentPage(page)
+    console.log('Current Business: ', newBusiness)
+  }
+  const updateBusiness = (updates: Partial<Business>) => {
+    setNewBusiness((prev) => ({ ...prev, ...updates }))
+  }
+  const updateAssistant = (updates: Partial<Assistant>) => {
+    setNewAssistant((prev) => ({ ...prev, ...updates }))
+  }
+  console.log(newBusiness)
+
+  return (
+    <>
+      {currentPage === 'Page1' && (
+        <StepOne
+          business={newBusiness}
+          assistant={newAssistant}
+          onBusinessUpdate={updateBusiness}
+          onAssistantUpdate={updateAssistant}
+          nextStepAction={() => NextStepAction('Page2')}
+          backAction={() => NextStepAction('Page1')}
+        />
+      )}
+      {currentPage === 'Page2' && (
+        <StepTwo
+          business={newBusiness}
+          assistant={newAssistant}
+          onBusinessUpdate={updateBusiness}
+          onAssistantUpdate={updateAssistant}
+          nextStepAction={() => NextStepAction('Page3')}
+          backAction={() => NextStepAction('Page1')}
+        />
+      )}
+      {currentPage === 'Page3' && (
+        <StepThree
+          business={newBusiness}
+          assistant={newAssistant}
+          onBusinessUpdate={updateBusiness}
+          onAssistantUpdate={updateAssistant}
+          nextStepAction={() => NextStepAction('Page1')}
+          backAction={() => NextStepAction('Page2')}
+        />
+      )}
+    </>
+  )
+}

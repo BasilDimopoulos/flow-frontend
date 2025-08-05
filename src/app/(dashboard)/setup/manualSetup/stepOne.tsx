@@ -1,4 +1,14 @@
-export default function ManualSetup() {
+'use client'
+import { ArrowLeftCircleIcon } from '@heroicons/react/16/solid'
+import type { BusinessWizardStepProps } from './manualSetup'
+
+export default function StepOne({
+  business,
+  onBusinessUpdate: onUpdate,
+  nextStepAction,
+}: BusinessWizardStepProps) {
+  console.log('business.contact_name:', business.contact_name)
+
   return (
     <div className="relative isolate h-screen bg-white">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
@@ -58,48 +68,29 @@ export default function ManualSetup() {
             </p>
           </div>
         </div>
-        <form
-          action="#"
-          method="POST"
-          className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48"
-        >
+        <form className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div className="">
               <div>
                 <label
-                  htmlFor="first-name"
+                  htmlFor="contact-name"
                   className="block text-sm/6 font-semibold text-gray-900"
                 >
-                  First name
+                  Contact name
                 </label>
                 <div className="mt-2.5">
                   <input
-                    id="first-name"
-                    name="first-name"
+                    id="contact-name"
+                    name="contact-name"
                     type="text"
                     autoComplete="given-name"
+                    value={business.contact_name || ''}
+                    onChange={(e) => onUpdate({ contact_name: e.target.value })}
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                   />
                 </div>
               </div>
-              <div>
-                <label
-                  htmlFor="last-name"
-                  className="block text-sm/6 font-semibold text-gray-900"
-                >
-                  Last name
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="last-name"
-                    name="last-name"
-                    type="text"
-                    autoComplete="family-name"
-                    className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-2">
+              <div className="mt-2.5 sm:col-span-2">
                 <label
                   htmlFor="business-name"
                   className="block text-sm/6 font-semibold text-gray-900"
@@ -112,12 +103,14 @@ export default function ManualSetup() {
                     name="business-name"
                     type="text"
                     autoComplete="business-name"
+                    value={business.name || ''}
+                    onChange={(e) => onUpdate({ name: e.target.value })}
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                   />
                 </div>
               </div>
 
-              <div className="sm:col-span-2">
+              <div className="mt-2.5 sm:col-span-2">
                 <label
                   htmlFor="email"
                   className="block text-sm/6 font-semibold text-gray-900"
@@ -129,12 +122,14 @@ export default function ManualSetup() {
                     id="email"
                     name="email"
                     type="email"
+                    value={business.email || ''}
+                    onChange={(e) => onUpdate({ email: e.target.value })}
                     autoComplete="email"
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                   />
                 </div>
               </div>
-              <div className="sm:col-span-2">
+              <div className="mt-2.5 sm:col-span-2">
                 <label
                   htmlFor="phone-number"
                   className="block text-sm/6 font-semibold text-gray-900"
@@ -147,15 +142,24 @@ export default function ManualSetup() {
                     name="phone-number"
                     type="tel"
                     autoComplete="tel"
+                    value={business.phone_number || ''}
+                    onChange={(e) => onUpdate({ phone_number: e.target.value })}
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                   />
                 </div>
               </div>
             </div>
-            <div className="mt-8 flex justify-end">
+            <div className="mt-8 flex items-center justify-end gap-x-5">
+              <div className="flex items-center gap-x-1">
+                <ArrowLeftCircleIcon className="size-4 text-indigo-600" />
+                <p className="font-semibold text-indigo-600">
+                  Go to the AI assisted setup
+                </p>
+              </div>
               <button
                 type="submit"
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="w-24 rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() => nextStepAction()}
               >
                 Next Step
               </button>
