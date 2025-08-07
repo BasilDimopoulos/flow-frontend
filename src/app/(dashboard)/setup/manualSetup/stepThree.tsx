@@ -122,9 +122,7 @@ export default function StepThree({
             </p>
           </div>
         </div>
-        <form
-          action="#"
-          method="POST"
+        <div
           className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48"
         >
           <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
@@ -308,14 +306,14 @@ export default function StepThree({
                 <p className="font-semibold text-indigo-600">Back</p>
               </div>
               <button
-                type="submit"
+                onClick={() => nextStepAction()}
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Next Step
               </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   )

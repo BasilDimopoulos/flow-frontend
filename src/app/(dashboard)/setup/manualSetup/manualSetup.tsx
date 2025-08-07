@@ -1,5 +1,8 @@
 'use client'
+import { createNewAssistant } from '@/app/api/assistant'
+import { createNewBusiness, createNewBusinessUser } from '@/app/api/business'
 import { type Assistant, type Business } from '@/models/models'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import StepOne from './stepOne'
 import StepThree from './stepThree'
@@ -18,6 +21,7 @@ export default function ManualSetup() {
   const [currentPage, setCurrentPage] = useState('Page1')
   const [newBusiness, setNewBusiness] = useState<Partial<Business>>({})
   const [newAssistant, setNewAssistant] = useState<Partial<Assistant>>({})
+  const router = useRouter()
   const NextStepAction = (page: string) => {
     setCurrentPage(page)
     console.log('Current Business: ', newBusiness)
@@ -29,6 +33,20 @@ export default function ManualSetup() {
     setNewAssistant((prev) => ({ ...prev, ...updates }))
   }
   console.log(newBusiness)
+
+  const createNewBusinessAndAssistant = async () => {
+    const newBusinessEntry = await createNewBusiness(newBusiness)
+    console.log('New Business Entry: ', newBusinessEntry)
+    const newAssistantEntry = await createNewAssistant(
+      newAssistant,
+      newBusinessEntry.id,
+    )
+    const createNewBusinessUserRelationship = await createNewBusinessUser(
+      '3430d213-6a81-46fa-98a5-689120fd9dee',
+      newBusinessEntry.id,
+    )
+    router.push(`/dashboard/${newBusinessEntry?.name}`)
+  }
 
   return (
     <>
@@ -58,7 +76,7 @@ export default function ManualSetup() {
           assistant={newAssistant}
           onBusinessUpdate={updateBusiness}
           onAssistantUpdate={updateAssistant}
-          nextStepAction={() => NextStepAction('Page1')}
+          nextStepAction={() => createNewBusinessAndAssistant()}
           backAction={() => NextStepAction('Page2')}
         />
       )}

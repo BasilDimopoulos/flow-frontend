@@ -1,6 +1,7 @@
 'use client'
 
 import { Logo } from '@/components/logo'
+import { useUser } from '@clerk/nextjs'
 import {
   Dialog,
   DialogBackdrop,
@@ -13,7 +14,8 @@ import {
   FolderIcon,
   HomeIcon,
 } from '@heroicons/react/24/outline'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getUserBusinesses } from '../api/business'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -28,12 +30,31 @@ export default function RootLayout({
     { name: 'Leads', href: '#', icon: FolderIcon, current: false },
     { name: 'Settings', href: '#', icon: Cog6ToothIcon, current: false },
   ]
-  const teams = [
-    { id: 1, name: 'Planetaria', href: '#', initial: 'P', current: false },
-    { id: 2, name: 'Protocol', href: '#', initial: 'P', current: false },
-    { id: 3, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-  ]
+
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [businesses, setBusinesses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const { isLoaded, isSignedIn, user } = useUser()
+
+  useEffect(() => {
+    async function fetchBusinesses() {
+      setLoading(true)
+      const { businesses } = await getUserBusinesses(
+        '3430d213-6a81-46fa-98a5-689120fd9dee',
+      )
+      console.log(businesses)
+
+      if (businesses) {
+        setBusinesses(businesses)
+      } else {
+      }
+      setLoading(false)
+    }
+
+    // if (userId) {
+    fetchBusinesses()
+    // }
+  }, [])
 
   return (
     <html lang="en">
@@ -120,21 +141,21 @@ export default function RootLayout({
                         Your businesses
                       </div>
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
-                        {teams.map((team) => (
-                          <li key={team.name}>
+                        {businesses?.map((business) => (
+                          <li key={business.name}>
                             <a
-                              href={team.href}
-                              className={classNames(
-                                team.current
-                                  ? 'bg-gray-800 text-white'
-                                  : 'text-gray-400 hover:bg-gray-800 hover:text-white',
-                                'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
-                              )}
+                            // href={team.href}
+                            // className={classNames(
+                            //   team.current
+                            //     ? 'bg-gray-800 text-white'
+                            //     : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                            //   'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
+                            // )}
                             >
                               <span className="flex size-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                                {team.initial}
+                                {business.name[0]}
                               </span>
-                              <span className="truncate">{team.name}</span>
+                              <span className="truncate">{business.name}</span>
                             </a>
                           </li>
                         ))}
@@ -198,21 +219,21 @@ export default function RootLayout({
                     Your businesses
                   </div>
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
-                    {teams.map((team) => (
-                      <li key={team.name}>
+                    {businesses?.map((business) => (
+                      <li key={business.name}>
                         <a
-                          href={team.href}
+                          href={'team.href'}
                           className={classNames(
-                            team.current
-                              ? 'bg-gray-600 text-white'
-                              : 'text-gray-600 hover:bg-gray-400 hover:text-white',
-                            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
+                            // bus.current
+                            //   ? 'bg-gray-600 text-white'
+                            // : 'text-gray-600 hover:bg-gray-400 hover:text-white',
+                            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-600 hover:bg-gray-400 hover:text-white',
                           )}
                         >
                           <span className="flex size-6 shrink-0 items-center justify-center rounded-lg border border-gray-300 bg-gray-300 text-[0.625rem] font-medium text-gray-800 group-hover:text-white">
-                            {team.initial}
+                            {business.name[0]}
                           </span>
-                          <span className="truncate">{team.name}</span>
+                          <span className="truncate">{business.name}</span>
                         </a>
                       </li>
                     ))}
