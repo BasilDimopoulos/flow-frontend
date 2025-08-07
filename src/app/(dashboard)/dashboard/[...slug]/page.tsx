@@ -1,6 +1,7 @@
 // app/dashboard/[[...slug]]/page.tsx
 'use client'
 
+import { hasConnectedGoogleAccount } from '@/app/api/google'
 import ConnectGoogleSheetsButton from '@/app/components/ConnectGoogleSheetsButton'
 import { useParams } from 'next/navigation'
 
@@ -9,11 +10,13 @@ export default function BusinessInfo() {
   const { slug } = params
   const userId = '3430d213-6a81-46fa-98a5-689120fd9dee'
   const businessId = slug
+  const userHasConnectedAccount = hasConnectedGoogleAccount(userId)
 
   return (
     <div>
       <h1>Welcome to your business page</h1>
-      <ConnectGoogleSheetsButton />
+      if(!userHasConnectedAccount){<ConnectGoogleSheetsButton />}
+      else {//p tag}
       {/* {slug && slug.length > 0 && (
         <p>
           You have navigated to a sub-route: <strong>/{slug}</strong>
