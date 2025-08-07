@@ -222,7 +222,7 @@ export default function RootLayout({
                     {businesses?.map((business) => (
                       <li key={business.name}>
                         <a
-                          href={'team.href'}
+                          href={`/dashboard/${business.id}`}
                           className={classNames(
                             // bus.current
                             //   ? 'bg-gray-600 text-white'
